@@ -1,31 +1,31 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import React from 'react';
 
-function App() {
-  const [count, setCount] = useState(0);
+interface AppState {
+  count: number;
+}
 
-  return (
-    <>
+class App extends React.Component<unknown, AppState> {
+  constructor(props: unknown) {
+    super(props);
+    this.state = {
+      count: 0,
+    };
+  }
+
+  public handlerCount = () => {
+    this.setState(() => ({ count: this.state.count + 1 }));
+  };
+
+  render() {
+    return (
       <div>
-        <a href="https://vite.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <p className="mt-4">Вы кликнули {this.state.count} раз</p>
+        <button className="mt-10" onClick={this.handlerCount}>
+          Нажми на меня
+        </button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </>
-  );
+    );
+  }
 }
 
 export default App;
