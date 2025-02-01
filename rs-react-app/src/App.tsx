@@ -7,6 +7,7 @@ interface AppState {
 class App extends React.Component<unknown, AppState> {
   constructor(props: unknown) {
     super(props);
+
     this.state = {
       count: 0,
     };
