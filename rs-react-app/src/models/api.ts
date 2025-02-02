@@ -17,7 +17,7 @@ export interface ICard {
   vehicles?: unknown[];
 }
 
-export interface ISearchResult {
+export interface IApiResponse {
   count: number;
   next: unknown;
   previous: unknown;
