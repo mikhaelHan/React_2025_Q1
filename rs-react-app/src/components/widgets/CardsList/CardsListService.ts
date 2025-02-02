@@ -17,6 +17,5 @@ export const storageService = (query?: string) => {
 export const getCards = async (query: string) => {
   const LSResult: string = storageService(query);
 
-  const apiCards = await apiGetCards(LSResult);
-  return apiCards ? apiCards : [];
+  return await apiGetCards(LSResult);
 };

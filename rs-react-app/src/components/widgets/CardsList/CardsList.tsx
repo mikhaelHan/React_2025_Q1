@@ -9,7 +9,7 @@ interface CardsListProps {
 
 interface CardsListState {
   isLoad: boolean;
-  cardsList: ICard[];
+  cardsList: ICard[] | string;
 }
 
 class CardsList extends React.PureComponent<CardsListProps, CardsListState> {
@@ -45,15 +45,15 @@ class CardsList extends React.PureComponent<CardsListProps, CardsListState> {
       <div className="p-4 w-full">
         {isLoad ? (
           <p className="text-4xl font-semibold italic">Loading ...</p>
+        ) : typeof cardsList === 'string' ? (
+          <p className="text-4xl font-semibold italic">{cardsList}</p>
         ) : (
           <ul className="flex flex-col gap-4">
-            {cardsList.map((el: ICard, ind: number) => {
-              return (
-                <li key={ind}>
-                  <Card name={el.name} gender={el.gender} height={el.height} mass={el.mass} eye_color={el.eye_color} />
-                </li>
-              );
-            })}
+            {cardsList.map((el: ICard, ind: number) => (
+              <li key={ind}>
+                <Card name={el.name} gender={el.gender} height={el.height} mass={el.mass} eye_color={el.eye_color} />
+              </li>
+            ))}
           </ul>
         )}
       </div>
