@@ -4,7 +4,7 @@ import Card from '../../dummies/Card';
 import { getCards, storageService } from './CardsListService.ts';
 
 interface CardsListProps {
-  query: string | undefined;
+  query: string;
 }
 
 interface CardsListState {
@@ -32,7 +32,7 @@ class CardsList extends React.PureComponent<CardsListProps, CardsListState> {
   }
 
   async componentDidUpdate(prevProps: CardsListProps) {
-    if (this.props.query && this.props.query !== prevProps.query) {
+    if (this.props.query !== prevProps.query) {
       this.setState({ isLoad: true });
       await this.fetchCards(this.props.query);
     }
