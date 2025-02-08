@@ -30,6 +30,7 @@ export default tseslint.config(
       ...react.configs['jsx-runtime'].rules,
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-unused-expressions': 'off',
+      'prettier/prettier': ['error', { endOfLine: 'auto', }],
     },
     settings: {
       react: {
