@@ -1,64 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ICard } from '../../../models/api.ts';
 import Card from '../../dummies/Card';
-import { getCards, storageService } from './CardsListService.ts';
+import { getCards } from './CardsListService.ts';
+import { storageService } from '../../../utils/storageService.ts';
 
-interface CardsListProps {
-  query: string;
-}
+type CardsListProps = {
+  query: string | undefined;
+};
 
-interface CardsListState {
-  isLoad: boolean;
-  cardsList: ICard[] | string;
-}
+const CardsList: React.FC<CardsListProps> = (props: CardsListProps) => {
+  const { query } = props;
 
-class CardsList extends React.PureComponent<CardsListProps, CardsListState> {
-  constructor(props: CardsListProps) {
-    super(props);
-    this.state = {
-      isLoad: true,
-      cardsList: [],
-    };
-  }
+  const [responseState, setResponseState] = useState<ICard[] | string>([]);
+  const [loadState, setLoadState] = useState<boolean>(true);
 
-  fetchCards = async (query: string) => {
-    const cardsList = await getCards(query);
-    this.setState({ cardsList: cardsList, isLoad: false });
+  const fetchCards = async (query: string | undefined) => {
+    const lsQuery = storageService();
+    const response = query !== undefined ? await getCards(query) : await getCards(lsQuery);
+    setResponseState(response);
+    setLoadState(false);
   };
 
-  async componentDidMount() {
-    const query = storageService();
-    await this.fetchCards(query);
-  }
+  useEffect(() => {
+    fetchCards(query).then(() => {});
+  }, [query]);
 
-  async componentDidUpdate(prevProps: CardsListProps) {
-    if (this.props.query !== prevProps.query) {
-      this.setState({ isLoad: true });
-      await this.fetchCards(this.props.query);
-    }
-  }
-
-  render() {
-    const { isLoad, cardsList } = this.state;
-
-    return (
-      <div className="p-4 w-full">
-        {isLoad ? (
-          <p className="text-4xl font-semibold italic">Loading ...</p>
-        ) : typeof cardsList === 'string' ? (
-          <p className="text-4xl font-semibold italic">{cardsList}</p>
-        ) : (
-          <ul className="flex flex-col gap-4">
-            {cardsList.map((el: ICard, ind: number) => (
-              <li key={ind}>
-                <Card name={el.name} gender={el.gender} height={el.height} mass={el.mass} eye_color={el.eye_color} />
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    );
-  }
-}
+  return (
+    <div className="p-4 w-full">
+      {loadState ? (
+        <p className="text-4xl font-semibold italic">Loading ...</p>
+      ) : typeof responseState === 'string' ? (
+        <p className="text-4xl font-semibold italic">{responseState}</p>
+      ) : (
+        <ul className="flex flex-col gap-4">
+          {responseState.map((el: ICard, ind: number) => (
+            <li key={ind}>
+              <Card name={el.name} gender={el.gender} height={el.height} mass={el.mass} eye_color={el.eye_color} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
 
 export default CardsList;
