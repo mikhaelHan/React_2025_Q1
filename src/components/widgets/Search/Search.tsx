@@ -32,7 +32,7 @@ const Search: React.FC<SearchProps> = React.memo((props: SearchProps) => {
   if (errorState) throw new Error('Oops, something went wrong...');
 
   return (
-    <div className="p-4 w-full">
+    <div className="px-4 w-full">
       <div className="p-4 flex justify-between gap-8">
         <form className="flex gap-8" onSubmit={handleSubmit}>
           <input

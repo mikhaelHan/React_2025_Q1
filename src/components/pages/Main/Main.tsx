@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import CardsList from '../../widgets/CardsList';
 import Search from '../../widgets/Search';
+import { Outlet } from 'react-router';
 
 const Main: React.FC = () => {
   const [queryState, setQueryState] = useState<string | undefined>(undefined);
@@ -11,10 +12,20 @@ const Main: React.FC = () => {
 
   return (
     <div className="max-w-[1280px] my-0 mx-auto text-center">
-      <div className="w-full h-full flex flex-col gap-1">
-        <h1 className="text-4xl font-extrabold">Class component !</h1>
-        <Search onSearchChange={handleSearchChange} />
-        <CardsList query={queryState} />
+      <div className="w-full h-lvh flex flex-col gap-1">
+        <div className="h-17p">
+          <h1 className="text-4xl font-extrabold">Class component !</h1>
+          <Search onSearchChange={handleSearchChange} />
+        </div>
+        <div className="w-full h-75p px-8 py-4 flex justify-between">
+          <div className="w-full overflow-y-scroll">
+            <CardsList query={queryState} />
+          </div>
+          <Outlet />
+        </div>
+        <div className="h-8p">
+          <h1>pagination</h1>
+        </div>
       </div>
     </div>
   );

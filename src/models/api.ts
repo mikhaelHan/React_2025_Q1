@@ -13,7 +13,7 @@ export interface ICard {
   skin_color?: string;
   species?: unknown[];
   starships?: unknown[];
-  url?: string;
+  url: string;
   vehicles?: unknown[];
 }
 

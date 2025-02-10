@@ -15,6 +15,7 @@ const CardsList: React.FC<CardsListProps> = (props: CardsListProps) => {
   const [loadState, setLoadState] = useState<boolean>(true);
 
   const fetchCards = async (query: string | undefined) => {
+    setLoadState(true);
     const lsQuery = storageService();
     const response = query !== undefined ? await getCards(query) : await getCards(lsQuery);
     setResponseState(response);
@@ -26,21 +27,30 @@ const CardsList: React.FC<CardsListProps> = (props: CardsListProps) => {
   }, [query]);
 
   return (
-    <div className="p-4 w-full">
+    <>
       {loadState ? (
         <p className="text-4xl font-semibold italic">Loading ...</p>
       ) : typeof responseState === 'string' ? (
         <p className="text-4xl font-semibold italic">{responseState}</p>
       ) : (
-        <ul className="flex flex-col gap-4">
-          {responseState.map((el: ICard, ind: number) => (
-            <li key={ind}>
-              <Card name={el.name} gender={el.gender} height={el.height} mass={el.mass} eye_color={el.eye_color} />
-            </li>
-          ))}
-        </ul>
+        <div className="w-full">
+          <ul className="flex flex-col gap-4">
+            {responseState.map((el: ICard, ind: number) => (
+              <li key={ind}>
+                <Card
+                  name={el.name}
+                  gender={el.gender}
+                  height={el.height}
+                  mass={el.mass}
+                  eye_color={el.eye_color}
+                  url={el.url}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 
