@@ -6,10 +6,9 @@ const Card: React.FC<ICard> = (props: ICard) => {
   const { name, gender, height, mass, eye_color, url } = props;
 
   const location = useLocation();
-  const toValue =
-    location.pathname === '/frontpage=2'
-      ? '/'
-      : `/frontpage=2?detail=${encodeURIComponent(url.split('/').reverse()[1])}`;
+  const toValue = location.pathname.startsWith('/frontpage=2&details')
+    ? '/'
+    : `/frontpage=2&details/${encodeURIComponent(url.split('/').reverse()[1])}`;
 
   return (
     <Link to={toValue}>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useParams } from 'react-router';
 import { getCardByParams } from '../../../api/card.ts';
 import { ICard } from '../../../models/api.ts';
 import CardDescription from '../../dummies/CardDescription';
@@ -14,6 +14,8 @@ interface IDetailPageState {
 }
 
 const DetailPage: React.FC = () => {
+  const { id } = useParams();
+
   const [dataState, setDataState] = useState<IDetailPageState>({
     name: '',
     gender: '',
@@ -24,9 +26,6 @@ const DetailPage: React.FC = () => {
   });
   const [loadState, setLoadState] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-
-  const location = useLocation();
-  const detail: string | null = new URLSearchParams(location.search).get('detail');
 
   const getDetail = async (query: string) => {
     setLoadState(true);
@@ -47,10 +46,10 @@ const DetailPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (detail) {
-      getDetail(detail).then(() => {});
+    if (id) {
+      getDetail(id).then(() => {});
     }
-  }, [detail]);
+  }, [id]);
 
   return (
     <div className="w-full h-full">
