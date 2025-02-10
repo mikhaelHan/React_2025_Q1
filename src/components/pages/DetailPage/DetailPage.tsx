@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { getCardByParams } from '../../../api/card.ts';
 import { ICard } from '../../../models/api.ts';
 import CardDescription from '../../dummies/CardDescription';
+import { apiRequest } from '../../../api/card.ts';
 
 interface IDetailPageState {
   name: string;
@@ -30,7 +30,7 @@ const DetailPage: React.FC = () => {
   const getDetail = async (query: string) => {
     setLoadState(true);
 
-    const response: ICard | string = await getCardByParams(query);
+    const response: ICard | string = await apiRequest<ICard>(query);
     typeof response === 'string'
       ? setError(response)
       : setDataState({

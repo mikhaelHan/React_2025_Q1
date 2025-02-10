@@ -1,17 +1,33 @@
 import React, { useCallback, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router';
+import { valid } from '../../../models/mainPage.ts';
+import useStorageService from '../../../utils/useStorageService.ts';
 import CardsList from '../../widgets/CardsList';
 import Search from '../../widgets/Search';
-import { Outlet, useLocation, useNavigate } from 'react-router';
+import Pagination from '../../widgets/Pagination';
 
 const Main: React.FC = () => {
-  const [queryState, setQueryState] = useState<string | undefined>(undefined);
+  const [mainState, setMainState] = useStorageService();
+  const [optionState, setOptionState] = useState<string | undefined>(undefined);
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleSearchChange = useCallback((query: string) => {
-    setQueryState(query);
-  }, []);
+  const handleSearchChange = (query: string) => {
+    setMainState({
+      search: query,
+      page: 1,
+    });
+    setOptionState(valid.query);
+  };
+
+  const handlePaginationChange = (page: number) => {
+    setMainState({
+      search: '',
+      page: page,
+    });
+    setOptionState(valid.page);
+  };
 
   const handleNavigateClick = useCallback(() => {
     if (location.pathname.startsWith('/frontpage=2&details/')) {
@@ -28,12 +44,12 @@ const Main: React.FC = () => {
         </div>
         <div className="w-full h-75p px-8 py-4 flex justify-between">
           <div onClick={handleNavigateClick} className="w-full overflow-y-scroll">
-            <CardsList query={queryState} />
+            <CardsList query={mainState} option={optionState} />
           </div>
           <Outlet />
         </div>
         <div className="h-8p">
-          <h1>pagination</h1>
+          <Pagination onPaginationChange={handlePaginationChange} />
         </div>
       </div>
     </div>

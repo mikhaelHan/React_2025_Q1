@@ -2,29 +2,31 @@ import React, { useEffect, useState } from 'react';
 import { ICard } from '../../../models/api.ts';
 import Card from '../../dummies/Card';
 import { getCards } from './CardsListService.ts';
-import { storageService } from '../../../utils/storageService.ts';
+import { ILSValue } from '../../../constants/LSKey.ts';
 
 type CardsListProps = {
-  query: string | undefined;
+  query: ILSValue;
+  option: string | undefined;
 };
 
 const CardsList: React.FC<CardsListProps> = (props: CardsListProps) => {
-  const { query } = props;
+  const { query, option } = props;
 
   const [responseState, setResponseState] = useState<ICard[] | string>([]);
   const [loadState, setLoadState] = useState<boolean>(true);
 
-  const fetchCards = async (query: string | undefined) => {
+  const fetchCards = async (query: ILSValue, option: string | undefined) => {
     setLoadState(true);
-    const lsQuery = storageService();
-    const response = query !== undefined ? await getCards(query) : await getCards(lsQuery);
+
+    const response = await getCards(query, option);
+
     setResponseState(response);
     setLoadState(false);
   };
 
   useEffect(() => {
-    fetchCards(query).then(() => {});
-  }, [query]);
+    fetchCards(query, option).then(() => {});
+  }, [query, option]);
 
   return (
     <>

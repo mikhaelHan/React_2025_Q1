@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { storageService } from '../../../utils/storageService.ts';
+import { getInitialQuery } from './getInitialQuery.ts';
 
-interface SearchProps {
+interface ISearchProps {
   onSearchChange: (query: string) => void;
 }
 
-const Search: React.FC<SearchProps> = React.memo((props: SearchProps) => {
+const Search: React.FC<ISearchProps> = (props: ISearchProps) => {
   const { onSearchChange } = props;
 
-  const initialQuery = storageService();
+  const initialQuery = getInitialQuery();
 
   const [queryState, setQueryState] = useState<string>(initialQuery);
   const [errorState, setErrorState] = useState<boolean>(false);
@@ -22,6 +22,7 @@ const Search: React.FC<SearchProps> = React.memo((props: SearchProps) => {
     e.preventDefault();
     if (queryState !== initialQuery) {
       onSearchChange(queryState);
+      setQueryState('');
     }
   };
 
@@ -61,7 +62,6 @@ const Search: React.FC<SearchProps> = React.memo((props: SearchProps) => {
       </div>
     </div>
   );
-});
+};
 
-Search.displayName = 'Search';
 export default Search;

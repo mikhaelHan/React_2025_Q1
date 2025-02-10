@@ -1,9 +1,12 @@
-import { storageService } from '../../../utils/storageService.ts';
-import { ICard } from '../../../models/api.ts';
-import { apiGetCards } from '../../../api/card.ts';
+import { IApiResponse, ICard } from '../../../models/api.ts';
+import { apiRequest } from '../../../api/card.ts';
+import { valid } from '../../../models/mainPage.ts';
+import { ILSValue } from '../../../constants/LSKey.ts';
 
-export const getCards = async (query: string): Promise<ICard[] | string> => {
-  const LSResult: string = storageService(query);
+export const getCards = async (query: ILSValue, option: string | undefined): Promise<string | ICard[]> => {
+  const path =
+    option === valid.query || (!option && !!query.search) ? `?search=${query.search}` : `?page=${query.page}`;
 
-  return await apiGetCards(LSResult);
+  const response: IApiResponse | string = await apiRequest<IApiResponse>(path);
+  return typeof response === 'string' ? response : response.results;
 };
