@@ -7,12 +7,10 @@ interface IPaginationProps {
 
 const Pagination: React.FC<IPaginationProps> = (props: IPaginationProps) => {
   const { onPaginationChange } = props;
-
   const initialPage = getInitialPage();
-  console.log(initialPage);
 
   const [paginationState, setPaginationState] = useState<number>(() => initialPage);
-  console.log(paginationState);
+
   const changePagination = (flag: boolean) => {
     setPaginationState((prev) => {
       const newState = prev + (flag ? 1 : -1);
@@ -20,6 +18,7 @@ const Pagination: React.FC<IPaginationProps> = (props: IPaginationProps) => {
       return newState;
     });
   };
+
   return (
     <div className="flex justify-center items-center gap-8 text-xl">
       <button

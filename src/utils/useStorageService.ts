@@ -17,9 +17,9 @@ const useStorageService = () => {
     return newItem;
   });
 
-  const changeValue = (value: (prevState: ILSValue) => { search: string; page: number }) => {
-    localStorage.setItem(LSKey, JSON.stringify(value));
-    setStoreValue(value);
+  const changeValue = (newValue: ILSValue) => {
+    localStorage.setItem(LSKey, JSON.stringify(newValue));
+    setStoreValue(newValue);
   };
 
   return [storeValue, changeValue] as const;

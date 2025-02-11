@@ -5,7 +5,6 @@ import useStorageService from '../../../utils/useStorageService.ts';
 import CardsList from '../../widgets/CardsList';
 import Search from '../../widgets/Search';
 import Pagination from '../../widgets/Pagination';
-import { ILSValue } from '../../../constants/LSKey.ts';
 
 const Main: React.FC = () => {
   const [mainState, setMainState] = useStorageService();
@@ -15,20 +14,18 @@ const Main: React.FC = () => {
   const location = useLocation();
 
   const handleSearchChange = (query: string) => {
-    setMainState((prevState: ILSValue) => ({
-      ...prevState,
+    setMainState({
       search: query,
       page: 1,
-    }));
+    });
     setOptionState(valid.query);
   };
 
   const handlePaginationChange = (page: number) => {
-    setMainState((prevState: ILSValue) => ({
-      ...prevState,
+    setMainState({
       search: '',
       page: page,
-    }));
+    });
     setOptionState(valid.page);
   };
 
@@ -45,15 +42,20 @@ const Main: React.FC = () => {
           <h1 className="text-4xl font-extrabold">Class component !</h1>
           <Search onSearchChange={handleSearchChange} />
         </div>
-        <div className="w-full h-75p px-8 py-4 flex justify-between">
+        <div
+          style={{ height: `${!mainState.search ? '75%' : '83%'}` }}
+          className="w-full h-75p px-8 py-4 flex justify-between"
+        >
           <div onClick={handleNavigateClick} className="w-full overflow-y-scroll">
             <CardsList query={mainState} option={optionState} />
           </div>
           <Outlet />
         </div>
-        <div className="h-8p">
-          <Pagination onPaginationChange={handlePaginationChange} />
-        </div>
+        {!mainState.search && (
+          <div className="h-8p">
+            <Pagination onPaginationChange={handlePaginationChange} />
+          </div>
+        )}
       </div>
     </div>
   );
