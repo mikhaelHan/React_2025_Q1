@@ -5,6 +5,7 @@ import useStorageService from '../../../utils/useStorageService.ts';
 import CardsList from '../../widgets/CardsList';
 import Search from '../../widgets/Search';
 import Pagination from '../../widgets/Pagination';
+import { ILSValue } from '../../../constants/LSKey.ts';
 
 const Main: React.FC = () => {
   const [mainState, setMainState] = useStorageService();
@@ -14,18 +15,20 @@ const Main: React.FC = () => {
   const location = useLocation();
 
   const handleSearchChange = (query: string) => {
-    setMainState({
+    setMainState((prevState: ILSValue) => ({
+      ...prevState,
       search: query,
       page: 1,
-    });
+    }));
     setOptionState(valid.query);
   };
 
   const handlePaginationChange = (page: number) => {
-    setMainState({
+    setMainState((prevState: ILSValue) => ({
+      ...prevState,
       search: '',
       page: page,
-    });
+    }));
     setOptionState(valid.page);
   };
 

@@ -7,7 +7,6 @@ interface ISearchProps {
 
 const Search: React.FC<ISearchProps> = (props: ISearchProps) => {
   const { onSearchChange } = props;
-
   const initialQuery = getInitialQuery();
 
   const [queryState, setQueryState] = useState<string>(initialQuery);
